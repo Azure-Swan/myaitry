@@ -14,47 +14,47 @@ const WaveBackground: React.FC = () => {
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
 
-    // Yellow / Gold / Orange Wave Parameters
+    // Blue / Cyan Wave Parameters
     const waves = [
       {
-        // Light Yellow background wave
-        gradientStart: 'rgba(255, 215, 0, 0.05)',
-        gradientEnd: 'rgba(255, 165, 0, 0.1)',
+        // Very Light Blue background wave
+        gradientStart: 'rgba(224, 242, 255, 0.4)',
+        gradientEnd: 'rgba(200, 230, 255, 0.1)',
         speed: 0.002,
-        amplitude: 60,
+        amplitude: 50,
         frequency: 0.001,
         offset: 0,
         yOffset: height * 0.55,
         tilt: 0
       },
       {
-        // Bright Orange/Gold wave
-        gradientStart: 'rgba(255, 140, 0, 0.15)', // Dark Orange
-        gradientEnd: 'rgba(255, 215, 0, 0.0)',   // Gold transparent
+        // Cyan/Teal wave
+        gradientStart: 'rgba(0, 210, 255, 0.1)',
+        gradientEnd: 'rgba(0, 150, 255, 0.0)',
         speed: 0.003,
-        amplitude: 90,
+        amplitude: 80,
         frequency: 0.0015,
         offset: 100,
         yOffset: height * 0.6,
         tilt: 50
       },
       {
-        // Vivid Yellow/Orange primary wave
-        gradientStart: 'rgba(255, 200, 0, 0.2)',
-        gradientEnd: 'rgba(255, 100, 0, 0.05)',
+        // Primary Brand Blue wave
+        gradientStart: 'rgba(0, 110, 255, 0.15)',
+        gradientEnd: 'rgba(0, 82, 217, 0.05)',
         speed: 0.0025,
-        amplitude: 110,
+        amplitude: 100,
         frequency: 0.0008,
         offset: 200,
         yOffset: height * 0.65,
         tilt: -20
       },
-      // Bottom filler wave (Red-Orange)
+      // Bottom filler wave (Darker Blue)
       {
-        gradientStart: 'rgba(255, 69, 0, 0.08)',
-        gradientEnd: 'rgba(255, 140, 0, 0.2)',
+        gradientStart: 'rgba(0, 50, 150, 0.05)',
+        gradientEnd: 'rgba(0, 100, 200, 0.1)',
         speed: 0.001,
-        amplitude: 140,
+        amplitude: 120,
         frequency: 0.0005,
         offset: 50,
         yOffset: height * 0.75,
@@ -77,9 +77,9 @@ const WaveBackground: React.FC = () => {
       ctx.clearRect(0, 0, width, height);
       time += 1;
 
-      // Draw grid lines in background for "tech" feel (Warm Tone)
+      // Draw grid lines in background for "tech" feel (Cool Tone)
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(255, 180, 0, 0.1)'; // Gold grid lines
+      ctx.strokeStyle = 'rgba(0, 100, 255, 0.05)';
       ctx.lineWidth = 1;
       
       // Vertical perspective lines
@@ -88,8 +88,8 @@ const WaveBackground: React.FC = () => {
       const topY = 0;
       
       for(let i = -10; i <= 10; i++) {
-        const xStart = centerX + (i * width * 0.05); // Top spacing
-        const xEnd = centerX + (i * width * 0.2);   // Bottom spacing (perspective)
+        const xStart = centerX + (i * width * 0.05);
+        const xEnd = centerX + (i * width * 0.2); 
         ctx.moveTo(xStart, topY);
         ctx.lineTo(xEnd, bottomY);
       }
@@ -107,7 +107,7 @@ const WaveBackground: React.FC = () => {
         ctx.fillStyle = gradient;
         
         // Stroke should be a slightly stronger version of the start color
-        ctx.strokeStyle = wave.gradientStart.replace('0.05', '0.3').replace('0.1', '0.4').replace('0.2', '0.5'); 
+        ctx.strokeStyle = wave.gradientStart.replace('0.1', '0.3').replace('0.05', '0.2'); 
         ctx.lineWidth = 1;
 
         ctx.moveTo(0, height); // Start bottom left
@@ -128,8 +128,6 @@ const WaveBackground: React.FC = () => {
         ctx.closePath();
         
         ctx.fill();
-        // Optional: stroke the top edge for definition
-        // ctx.stroke();
       });
 
       animationFrameId = requestAnimationFrame(draw);

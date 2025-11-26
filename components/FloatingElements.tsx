@@ -3,13 +3,13 @@ import React, { useMemo } from 'react';
 const FloatingElements: React.FC = () => {
   // Generate random particles for "data flow" effect
   const particles = useMemo(() => {
-    return Array.from({ length: 25 }).map((_, i) => ({
+    return Array.from({ length: 30 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 80 + 10}%`,
       delay: `${Math.random() * 5}s`,
       duration: `${3 + Math.random() * 4}s`,
-      size: Math.random() > 0.7 ? 'w-2 h-2' : 'w-1.5 h-1.5',
+      size: Math.random() > 0.7 ? 'w-1.5 h-1.5' : 'w-1 h-1',
       opacity: Math.random() * 0.5 + 0.3
     }));
   }, []);
@@ -17,11 +17,11 @@ const FloatingElements: React.FC = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-10 perspective-1000">
       
-      {/* 1. Data Particles (Square dots - Gold/Orange) */}
+      {/* 1. Data Particles (Square dots - Blue/Cyan) */}
       {particles.map((p) => (
         <div
           key={p.id}
-          className={`absolute bg-orange-400 rounded-[1px] ${p.size} animate-pulse shadow-sm shadow-orange-300`}
+          className={`absolute bg-brand-cyan rounded-[1px] ${p.size} animate-pulse shadow-sm shadow-blue-300`}
           style={{
             left: p.left,
             top: p.top,
@@ -32,94 +32,121 @@ const FloatingElements: React.FC = () => {
         />
       ))}
 
-      {/* 2. Primary 3D Shape - Right Side (Tetrahedron-ish - Gold/Red Gradient) */}
-      <div className="absolute top-[15%] right-[8%] w-40 h-40 md:w-56 md:h-56 animate-float">
-        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-2xl animate-spin-slow">
+      {/* --- IMAGE ELEMENTS (Illustrative SVGs) --- */}
+
+      {/* 1. Main Cloud "Image" - Top Right */}
+      <div className="absolute top-[12%] right-[10%] w-48 h-48 md:w-64 md:h-64 animate-float">
+         {/* 3D-style Cloud Illustration */}
+         <svg viewBox="0 0 200 150" className="w-full h-full drop-shadow-2xl">
             <defs>
-              <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#fbbf24" /> {/* Amber 400 */}
-                <stop offset="100%" stopColor="#ea580c" /> {/* Orange 600 */}
-              </linearGradient>
+               <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#ffffff" />
+                  <stop offset="100%" stopColor="#e0f2fe" />
+               </linearGradient>
+               <filter id="glow">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                  <feMerge>
+                     <feMergeNode in="coloredBlur"/>
+                     <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+               </filter>
             </defs>
-            <path d="M50 10 L90 40 L50 90 L10 40 Z" fill="url(#goldGrad)" opacity="0.9" />
-            <path d="M50 10 L90 40 L50 50 Z" fill="#fcd34d" opacity="0.6" /> {/* Amber 300 */}
-            <path d="M10 40 L50 10 L50 50 Z" fill="#fdba74" opacity="0.4" /> {/* Orange 300 */}
-        </svg>
-        {/* Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-orange-500/20 blur-3xl rounded-full"></div>
+            <path d="M140 100 C 165 100, 180 85, 180 65 C 180 40, 155 25, 135 30 C 125 10, 95 5, 75 25 C 65 20, 45 20, 35 35 C 15 35, 5 55, 15 80 C 20 95, 35 100, 45 100 Z" 
+               fill="url(#cloudGrad)" filter="url(#glow)" stroke="#bae6fd" strokeWidth="2" opacity="0.95" />
+            
+            {/* Cloud Shine */}
+            <path d="M75 35 Q 95 15, 125 40" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.8" />
+         </svg>
+         {/* Glow behind cloud */}
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-400/20 blur-3xl rounded-full"></div>
       </div>
 
-      {/* 3. Secondary Shape - Left Side (Cube/Diamond - Orange/Yellow) */}
-      <div className="absolute bottom-[20%] left-[3%] w-20 h-20 md:w-28 md:h-28 animate-float-delayed">
-        <div className="relative w-full h-full transform rotate-45">
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-500 rounded-lg opacity-80 shadow-lg animate-wiggle border border-white/20"></div>
-            <div className="absolute inset-0 border border-white/40 rounded-lg transform scale-110"></div>
-        </div>
-      </div>
+      {/* 2. Server Stack "Image" - Bottom Right */}
+      <div className="absolute bottom-[20%] right-[20%] w-28 h-36 animate-float-delayed hidden md:block">
+         <svg viewBox="0 0 100 140" className="w-full h-full drop-shadow-xl">
+             <defs>
+               <linearGradient id="serverBody" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#f1f5f9" />
+                  <stop offset="100%" stopColor="#cbd5e1" />
+               </linearGradient>
+               <linearGradient id="serverSide" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#94a3b8" />
+                  <stop offset="100%" stopColor="#64748b" />
+               </linearGradient>
+             </defs>
+             {/* Server Unit 1 */}
+             <path d="M10 10 L90 10 L90 30 L10 30 Z" fill="url(#serverBody)" stroke="#94a3b8" strokeWidth="1" />
+             <path d="M90 10 L100 20 L100 40 L90 30 Z" fill="url(#serverSide)" />
+             <circle cx="20" cy="20" r="2" fill="#00d2ff" className="animate-pulse" />
+             <circle cx="30" cy="20" r="2" fill="#00d2ff" className="animate-pulse" style={{animationDelay: '0.2s'}} />
+             
+             {/* Server Unit 2 */}
+             <path d="M10 40 L90 40 L90 60 L10 60 Z" fill="url(#serverBody)" stroke="#94a3b8" strokeWidth="1" />
+             <path d="M90 40 L100 50 L100 70 L90 60 Z" fill="url(#serverSide)" />
+             <circle cx="20" cy="50" r="2" fill="#22c55e" className="animate-pulse" />
+             
+             {/* Server Unit 3 */}
+             <path d="M10 70 L90 70 L90 90 L10 90 Z" fill="url(#serverBody)" stroke="#94a3b8" strokeWidth="1" />
+             <path d="M90 70 L100 80 L100 100 L90 90 Z" fill="url(#serverSide)" />
+             <circle cx="20" cy="80" r="2" fill="#00d2ff" className="animate-pulse" />
+             <circle cx="30" cy="80" r="2" fill="#00d2ff" className="animate-pulse" style={{animationDelay: '0.4s'}} />
 
-      {/* 4. Background Plus Signs (+ symbols - Warm Colors) */}
-      <div className="absolute top-[15%] left-[25%] text-orange-300/40 text-4xl font-bold animate-spin-reverse-slow select-none">+</div>
-      <div className="absolute top-[40%] right-[35%] text-yellow-500/30 text-2xl font-bold animate-pulse-slow select-none">+</div>
-      <div className="absolute bottom-[10%] left-[45%] text-red-300/20 text-6xl font-bold animate-spin-slow select-none">+</div>
-
-      {/* 5. Shooting Line (Comet - Gold) */}
-      <div className="absolute top-[25%] left-0 w-full h-[1px] overflow-hidden">
-        <div className="w-[200px] h-full bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent transform translate-x-[-100%] animate-[slideRight_7s_linear_infinite]"></div>
-      </div>
-       <div className="absolute top-[65%] left-0 w-full h-[1px] overflow-hidden">
-        <div className="w-[300px] h-full bg-gradient-to-r from-transparent via-orange-400/40 to-transparent transform translate-x-[-100%] animate-[slideRight_10s_linear_2s_infinite]"></div>
-      </div>
-
-      {/* NEW ELEMENTS BELOW */}
-
-      {/* 6. Rotating Dashed Ring - Top Right Center (Technical Feel) */}
-      <div className="absolute top-[18%] right-[28%] w-32 h-32 opacity-40 animate-spin-reverse-slow hidden md:block">
-         <svg viewBox="0 0 100 100" className="w-full h-full">
-            <circle cx="50" cy="50" r="45" fill="none" stroke="#F59E0B" strokeWidth="1" strokeDasharray="8 8" />
-            <circle cx="50" cy="50" r="32" fill="none" stroke="#FBBF24" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.6" />
+             {/* Base */}
+             <path d="M5 100 L95 100 L95 110 L5 110 Z" fill="#475569" />
          </svg>
       </div>
 
-      {/* 7. Floating Capsule/Pill - Bottom Left (Soft Volume) */}
-      <div className="absolute bottom-[28%] left-[12%] w-14 h-28 opacity-60 animate-float" style={{ animationDelay: '1.5s', animationDuration: '6s' }}>
-          <div className="w-full h-full rounded-full bg-gradient-to-b from-orange-200 to-yellow-100 blur-[2px] transform -rotate-12 border border-white/50 shadow-lg shadow-orange-200/20"></div>
+      {/* 3. Shield "Image" (Security) - Bottom Left */}
+      <div className="absolute bottom-[25%] left-[8%] w-24 h-24 animate-float" style={{ animationDelay: '1s' }}>
+          <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-lg">
+             <defs>
+                <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                   <stop offset="0%" stopColor="#60a5fa" />
+                   <stop offset="100%" stopColor="#2563eb" />
+                </linearGradient>
+             </defs>
+             <path d="M50 10 L85 25 V 50 C 85 75, 50 95, 50 95 C 50 95, 15 75, 15 50 V 25 Z" 
+                fill="url(#shieldGrad)" opacity="0.9" stroke="white" strokeWidth="2" />
+             {/* Checkmark */}
+             <path d="M35 50 L45 60 L65 40" fill="none" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
       </div>
 
-      {/* 8. Hexagon Cluster - Top Left (Tech/Data) */}
-      <div className="absolute top-[12%] left-[8%] w-28 h-28 opacity-30 animate-pulse-slow hidden md:block">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-yellow-500">
-           <path d="M30 10 L50 20 L50 40 L30 50 L10 40 L10 20 Z" opacity="0.7" />
-           <path d="M65 30 L85 40 L85 60 L65 70 L45 60 L45 40 Z" opacity="0.5" />
-           <path d="M30 60 L50 70 L50 90 L30 100 L10 90 L10 70 Z" opacity="0.4" />
-        </svg>
+      {/* 4. Floating Chip "Image" - Top Left */}
+      <div className="absolute top-[18%] left-[12%] w-20 h-20 animate-spin-reverse-slow hidden md:block">
+         <svg viewBox="0 0 100 100" className="w-full h-full">
+            <rect x="25" y="25" width="50" height="50" rx="5" fill="#1e293b" stroke="#00d2ff" strokeWidth="2" />
+            {/* Pins */}
+            <path d="M25 35 H 15 M 25 45 H 15 M 25 55 H 15 M 25 65 H 15" stroke="#94a3b8" strokeWidth="2" />
+            <path d="M75 35 H 85 M 75 45 H 85 M 75 55 H 85 M 75 65 H 85" stroke="#94a3b8" strokeWidth="2" />
+            <path d="M35 25 V 15 M 45 25 V 15 M 55 25 V 15 M 65 25 V 15" stroke="#94a3b8" strokeWidth="2" />
+            <path d="M35 75 V 85 M 45 75 V 85 M 55 75 V 85 M 65 75 V 85" stroke="#94a3b8" strokeWidth="2" />
+            <rect x="40" y="40" width="20" height="20" fill="#00d2ff" opacity="0.8" />
+         </svg>
       </div>
 
-      {/* 9. Isometric Wireframe Cube - Bottom Right (Structure) */}
-      <div className="absolute bottom-[18%] right-[18%] w-24 h-24 opacity-40 animate-float-delayed hidden md:block">
-        <svg viewBox="0 0 100 100" className="w-full h-full stroke-orange-600 fill-none stroke-[1.5]">
+      {/* 5. Isometric Cube (Abstract Tech) - Far Right */}
+      <div className="absolute top-[45%] right-[2%] w-16 h-16 animate-wiggle opacity-60">
+        <svg viewBox="0 0 100 100" className="w-full h-full stroke-brand-cyan fill-none stroke-2">
            <path d="M10 30 L50 10 L90 30 L90 70 L50 90 L10 70 Z" />
            <path d="M10 30 L50 50 L90 30" />
            <path d="M50 90 L50 50" />
         </svg>
       </div>
-
-      {/* 10. Neon Squiggle Line - Middle Right (Energy) */}
-      <div className="absolute top-[48%] right-[4%] w-40 h-16 opacity-50 animate-wiggle">
-         <svg viewBox="0 0 120 40" className="w-full h-full stroke-red-400 fill-none stroke-[3]" style={{ filter: 'drop-shadow(0px 0px 4px rgba(255,100,0,0.3))'}}>
-            <path d="M10 20 C 30 5, 50 35, 70 20 S 110 5, 110 20" strokeLinecap="round" />
-         </svg>
+      
+      {/* 6. Background Globe Wireframe - Center Left */}
+      <div className="absolute top-[30%] left-[25%] w-32 h-32 opacity-10 animate-spin-slow">
+        <svg viewBox="0 0 100 100" className="w-full h-full stroke-brand-dark fill-none stroke-1">
+           <circle cx="50" cy="50" r="48" />
+           <ellipse cx="50" cy="50" rx="20" ry="48" />
+           <ellipse cx="50" cy="50" rx="48" ry="20" />
+        </svg>
       </div>
 
-      {/* Large blurred orbs for color depth (Warm Ambient Light) */}
-      <div className="absolute -top-24 -left-24 w-[600px] h-[600px] bg-yellow-100/40 rounded-full blur-[100px] mix-blend-multiply"></div>
-      <div className="absolute bottom-0 right-0 w-[700px] h-[500px] bg-orange-100/50 rounded-full blur-[90px] mix-blend-multiply"></div>
+      {/* Large blurred orbs for color depth (Cool Blue Ambient Light) */}
+      <div className="absolute -top-24 -left-24 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-[100px] mix-blend-multiply"></div>
+      <div className="absolute bottom-0 right-0 w-[700px] h-[500px] bg-cyan-100/40 rounded-full blur-[90px] mix-blend-multiply"></div>
       
-      <style>{`
-        @keyframes slideRight {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100vw); }
-        }
-      `}</style>
     </div>
   );
 };
